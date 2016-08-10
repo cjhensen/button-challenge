@@ -1,170 +1,101 @@
-// TODO: DEFINE YOUR BUTTON STYLES HERE
-
 // Color schemes
-$base-color: #007acc;
 $blue: #2c82c9;
-$green: #1abc9c;
 $red: #e14938;
+$green: #1abc9c;
 $orange: #fba026;
+$purple: #9365b8;
 
-// Throb animation (for calling attention to the button to click it)
+@mixin vendorPrefixes($property, $value...) {
+	#{"-webkit-" + $property}: $value;
+		 #{"-moz-" + $property}: $value;
+					     #{$property}: $value;
+}
+
+@mixin keyframes($animationName) {
+	@-webkit-keyframes #{$animationName} {
+		@content;
+	}
+	@-moz-keyframes #{$animationName} {
+		@content;
+	}
+	@keyframes #{$animationName} {
+		@content;
+	}
+}
+
+@mixin animation($name: null, 
+								 $duration: null, 
+								 $fill-mode: null, 
+								 $delay: null, 
+								 $direction: null, 
+								 $iteration-count: null, 
+								 $play-state: null, 
+								 $timing-function: null) {
+	@if $name != null { @include vendorPrefixes(animation-name, $name); }
+	@if $duration != null { @include vendorPrefixes(animation-duration, $duration); }
+	@if $fill-mode != null { @include vendorPrefixes(animation-fill-mode, $fill-mode); }
+	@if $delay != null { @include vendorPrefixes(animation-delay, $delay); }
+	@if $direction != null { @include vendorPrefixes(animation-direction, $direction); }
+	@if $iteration-count != null { @include vendorPrefixes(animation-iteration-count, $iteration-count); }
+	@if $play-state != null { @include vendorPrefixes(animation-play-state, $play-state); }
+	@if $timing-function != null { @include vendorPrefixes(animation-timing-function, $timing-function); }
+}
+
 $throb-size: 1.25;
-
-@-webkit-keyframes throb {
+@include keyframes(throb) {
 	from {
-		-webkit-transform: scale3d(1,1,1);
-						transform: scale3d(1,1,1);
+		@include vendorPrefixes(transform, scale3d(1,1,1));
 	}
 
 	50% {
-		-webkit-transform: scale3d($throb-size, $throb-size, $throb-size);
-						transform: scale3d($throb-size, $throb-size, $throb-size);
+		@include vendorPrefixes(transform, scale3d($throb-size, $throb-size, $throb-size));
 	}
 
 	to {
-		-webkit-transform: scale3d(1,1,1);
-						transform: scale3d(1,1,1);
+		@include vendorPrefixes(transform, scale3d(1,1,1));
 	}
 }
 
-@keyframes throb {
+@include keyframes(vibrate) {
 	from {
-		-webkit-transform: scale3d(1,1,1);
-						transform: scale3d(1,1,1);
-	}
-
-	50% {
-		-webkit-transform: scale3d($throb-size, $throb-size, $throb-size);
-						transform: scale3d($throb-size, $throb-size, $throb-size);
-	}
-
-	to {
-		-webkit-transform: scale3d(1,1,1);
-						transform: scale3d(1,1,1);
-	}
-}
-
-// Vibrate animation (for telling the user they can't click the button)
-@-webkit-keyframes vibrate {
-	from {
-		-webkit-transform: translate3d(0,0,0);
-					  transform: translate3d(0,0,0);
+		@include vendorPrefixes(transform, translate3d(0,0,0));
 	}
 
 	20%, 60% {
-		-webkit-transform: translate3d(-5px,0,0);
-			      transform: translate3d(-5px,0,0);
+		@include vendorPrefixes(transform, translate3d(-5px, 0, 0));
 	}
 
 	40%, 80% {
-		-webkit-transform: translate3d(5px,0,0);
-						transform: translate3d(5px,0,0);
+		@include vendorPrefixes(transform, translate3d(5px,0,0));
 	}
 
 	to {
-		-webkit-transform: translate3d(0,0,0);
-					  transform: translate3d(0,0,0);
+		@include vendorPrefixes(transform, translate3d(0,0,0));
 	}
 }
 
-@keyframes vibrate {
-	from {
-		-webkit-transform: translate3d(0,0,0);
-					  transform: translate3d(0,0,0);
-	}
-
-	20%, 60% {
-		-webkit-transform: translate3d(-5px,0,0);
-			      transform: translate3d(-5px,0,0);
-	}
-
-	40%, 80% {
-		-webkit-transform: translate3d(5px,0,0);
-						transform: translate3d(5px,0,0);
-	}
-
-	to {
-		-webkit-transform: translate3d(0,0,0);
-					  transform: translate3d(0,0,0);
-	}
-}
-
-
-.btn {
-	height: auto; //changeable
-	line-height: 30px; // same as height
-	padding: 0 15px;
-
-	font-size: 11pt;
-	color: $base-color;
-	background-color: rgba($base-color, 0);
-
-	border: 2px solid $base-color;
-	border-radius: 16px;
-	outline: none;
-
-	-webkit-transition: background-color 300ms linear, 
-											color 300ms linear,
-											border-color 300ms linear;
-					transition: background-color 300ms linear,  
-											color 300ms linear,
-											border-color 300ms linear;
-
-	-webkit-animation-duration: 750ms;
-	animation-duration: 750ms;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
-
-	-webkit-animation-name: throb;
-	animation-name: throb;
-
-	&:hover {
-		background-color: rgba($base-color, 1);
-		color: #FFF;
-		cursor: pointer;
-	}
-
-	&:active {
-		background-color: rgba(darken($base-color, 20%), 1);
-		border-color: darken($base-color, 20%);
-
-		-webkit-transition: none;
-		transition: none;
-	}
-
-	&:disabled {
-		background-color: rgba($base-color, 0);
-		color: $base-color;
-		opacity: 0.4;
-		cursor: default;
-
-		-webkit-animation-name: none;
-		animation-name: none;
-	}
-
-	&:disabled:hover {
-		-webkit-animation-duration: 300ms;
-		animation-duration: 300ms;
-		-webkit-animation-name: vibrate;
-		animation-name: vibrate;
-	}
-
-}
-
-// FINAL BUTTON
-
-// base styles for btn
+// base styles for btn-rounded
 .btn-rounded {
 	font-size: 1em; // 16px
 	border: 0.125em solid; // 2px
 	border-radius: 1em; // 16px
 	outline: none;
+
+	margin-bottom: 40px; // for demo purposes with multiple buttons
+
+	@include vendorPrefixes(transition,
+		background-color 300ms linear, 
+		color 300ms linear, 
+		border-color 300ms linear
+	);
+
+	@include animation($name: throb, $duration: 600ms, $fill-mode: both);
+
 }
 
 @mixin btn-theme($btn-color, $btn-height: null, $btn-width: null) {
 	color: $btn-color;
-	background-color: transparent; // OR below
-	// background-color: rgba($btn-color, 0); // used for fading bg in on transition
+	background-color: transparent;
 	border-color: $btn-color;
 
 	// If no height or width is specified, the button defaults to having padding to space things out
@@ -195,17 +126,23 @@ $throb-size: 1.25;
 	&:active {
 		background-color: darken($btn-color, 20%);
 		border-color: darken($btn-color, 20%);
+
+		// stops the fade on click, and is instantaneous instead
+		@include vendorPrefixes(transition, none);
 	}
 
 	&:disabled {
 		opacity: 0.4;
 		cursor: default;
+
+		@include animation($name: none);
 	}
 
 	&:disabled:hover {
 		color: $btn-color;
 		background-color: transparent;
-		// ADD VIBRATE ANIMATION
+		
+		@include animation($name: vibrate, $duration: 300ms);
 	}
 }
 
@@ -220,10 +157,13 @@ $throb-size: 1.25;
 	@include btn-theme($red, $btn-width: 100px);
 }
 // green
-.btn-tertiary {
+.btn-previous {
 	@include btn-theme($green, $btn-height: 80px);
 } 
 // orange
-.btn-fourth {
+.btn-continue {
 	@include btn-theme($orange, 80px, 140px);
+}
+.btn-large {
+	@include btn-theme($purple, 100px, 50%);
 }
