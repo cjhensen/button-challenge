@@ -84,9 +84,9 @@ $throb-size: 1.25;
 	margin-bottom: 40px; // for demo purposes with multiple buttons
 
 	@include vendorPrefixes(transition,
-		background-color 300ms linear, 
-		color 300ms linear, 
-		border-color 300ms linear
+		background-color 250ms linear, 
+		color 250ms linear, 
+		border-color 250ms linear
 	);
 
 	@include animation($name: throb, $duration: 600ms, $fill-mode: both);
