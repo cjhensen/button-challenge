@@ -1,1 +1,144 @@
 // TODO: DEFINE YOUR BUTTON STYLES HERE
+$base-color: #007acc;
+$throb-size: 1.25;
+
+@-webkit-keyframes throb {
+	from {
+		-webkit-transform: scale3d(1,1,1);
+						transform: scale3d(1,1,1);
+	}
+
+	50% {
+		-webkit-transform: scale3d($throb-size, $throb-size, $throb-size);
+						transform: scale3d($throb-size, $throb-size, $throb-size);
+	}
+
+	to {
+		-webkit-transform: scale3d(1,1,1);
+						transform: scale3d(1,1,1);
+	}
+}
+
+@keyframes throb {
+	from {
+		-webkit-transform: scale3d(1,1,1);
+						transform: scale3d(1,1,1);
+	}
+
+	50% {
+		-webkit-transform: scale3d($throb-size, $throb-size, $throb-size);
+						transform: scale3d($throb-size, $throb-size, $throb-size);
+	}
+
+	to {
+		-webkit-transform: scale3d(1,1,1);
+						transform: scale3d(1,1,1);
+	}
+}
+
+@-webkit-keyframes vibrate {
+	from {
+		-webkit-transform: translate3d(0,0,0);
+					  transform: translate3d(0,0,0);
+	}
+
+	20%, 60% {
+		-webkit-transform: translate3d(-5px,0,0);
+			      transform: translate3d(-5px,0,0);
+	}
+
+	40%, 80% {
+		-webkit-transform: translate3d(5px,0,0);
+						transform: translate3d(5px,0,0);
+	}
+
+	to {
+		-webkit-transform: translate3d(0,0,0);
+					  transform: translate3d(0,0,0);
+	}
+}
+
+@keyframes vibrate {
+	from {
+		-webkit-transform: translate3d(0,0,0);
+					  transform: translate3d(0,0,0);
+	}
+
+	20%, 60% {
+		-webkit-transform: translate3d(-5px,0,0);
+			      transform: translate3d(-5px,0,0);
+	}
+
+	40%, 80% {
+		-webkit-transform: translate3d(5px,0,0);
+						transform: translate3d(5px,0,0);
+	}
+
+	to {
+		-webkit-transform: translate3d(0,0,0);
+					  transform: translate3d(0,0,0);
+	}
+}
+
+
+.btn {
+	height: auto; //changeable
+	line-height: 30px; // same as height
+	padding: 0 15px;
+
+	font-size: 11pt;
+	color: $base-color;
+	background-color: rgba($base-color, 0);
+
+	border: 2px solid $base-color;
+	border-radius: 16px;
+	outline: none;
+
+	-webkit-transition: background-color 300ms linear, 
+													color 300ms linear,
+													border-color 300ms linear;
+							transition: background-color 300ms linear,  
+													color 300ms linear,
+													border-color 300ms linear;
+
+	-webkit-animation-duration: 750ms;
+	animation-duration: 750ms;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+
+	-webkit-animation-name: throb;
+	animation-name: throb;
+
+	&:hover {
+		background-color: rgba($base-color, 1);
+		color: #FFF;
+		cursor: pointer;
+	}
+
+	&:active {
+		background-color: rgba(darken($base-color, 20%), 1);
+		border-color: darken($base-color, 20%);
+
+		-webkit-transition: none;
+		transition: none;
+	}
+
+	&:disabled {
+		background-color: rgba($base-color, 0);
+		color: $base-color;
+		opacity: 0.4;
+		cursor: default;
+
+		-webkit-animation-name: none;
+		animation-name: none;
+	}
+
+	&:disabled:hover {
+		-webkit-animation-duration: 300ms;
+		animation-duration: 300ms;
+		-webkit-animation-name: vibrate;
+		animation-name: vibrate;
+	}
+
+
+}
