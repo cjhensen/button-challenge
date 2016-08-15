@@ -170,6 +170,10 @@ $throb-size: 1.25; // Size that the button grows to
 }
 
 
+// To create a new button, either use an existing color scheme or add a new variable,
+// add a button to the HTML markup with a class of btn-rounded and a class of whatever
+// you name the theme variation.
+
 // Color schemes
 $blue: #2c82c9;
 $red: #e14938;
