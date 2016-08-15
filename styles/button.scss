@@ -1,16 +1,17 @@
-// Color schemes
-$blue: #2c82c9;
-$red: #e14938;
-$green: #1abc9c;
-$orange: #fba026;
-$purple: #9365b8;
+// Christian Hensen Aug 2016
+// https://github.com/cjhensen/
 
+
+// Mixin for vendor prefixes.
+// Can be used with any property and value or set of values.
 @mixin vendorPrefixes($property, $value...) {
 	#{"-webkit-" + $property}: $value;
 		 #{"-moz-" + $property}: $value;
 					     #{$property}: $value;
 }
 
+
+// Mixin for keyframes
 @mixin keyframes($animationName) {
 	@-webkit-keyframes #{$animationName} {
 		@content;
@@ -23,6 +24,11 @@ $purple: #9365b8;
 	}
 }
 
+
+// Mixin for animation with optional properties.
+// To reuse an animation, just @include animation(), pass in one of the 
+// animations below (throb or vibrate, or any other animation created in the future),
+// and pass in some properties. All properties are automatically vendor prefixed.
 @mixin animation($name: null, 
 								 $duration: null, 
 								 $fill-mode: null, 
@@ -41,7 +47,10 @@ $purple: #9365b8;
 	@if $timing-function != null { @include vendorPrefixes(animation-timing-function, $timing-function); }
 }
 
-$throb-size: 1.25;
+
+// Throb animation: Communicates that the button is enabled and the user can continue
+// with the experience.
+$throb-size: 1.25; // Size that the button grows to
 @include keyframes(throb) {
 	from {
 		@include vendorPrefixes(transform, scale3d(1,1,1));
@@ -56,6 +65,9 @@ $throb-size: 1.25;
 	}
 }
 
+
+// Vibrate animation: Communicates that the button is still disabled and that the
+// user cannot click on it.
 @include keyframes(vibrate) {
 	from {
 		@include vendorPrefixes(transform, translate3d(0,0,0));
@@ -74,34 +86,40 @@ $throb-size: 1.25;
 	}
 }
 
-// base styles for btn-rounded
+
+// Base styles for the rounded button.
+// Using em's so if zoomed in, the button font and border stays in proportion.
 .btn-rounded {
-	font-size: 1em; // 16px
+	font-size: 1em; // 16px or 12pt
 	border: 0.125em solid; // 2px
 	border-radius: 1em; // 16px
 	outline: none;
 
 	margin-bottom: 40px; // for demo purposes with multiple buttons
 
+	// Transition used on hover
 	@include vendorPrefixes(transition,
 		background-color 250ms linear, 
 		color 250ms linear, 
 		border-color 250ms linear
 	);
 
+	// Animation used when the button becomes enabled
 	@include animation($name: throb, $duration: 600ms, $fill-mode: both);
-
 }
 
+
+// Styling the button, with a required color property, and optional height 
+// and width properties.
 @mixin btn-theme($btn-color, $btn-height: null, $btn-width: null) {
 	color: $btn-color;
 	background-color: transparent;
 	border-color: $btn-color;
 
-	// If no height or width is specified, the button defaults to having padding to space things out
-	// If a height is specified and a width is not, the button will have right/left padding
-	// If a width is specified and a height is not, the button will have top/bottom padding
-	// If the button has both width and height specified, there will be no padding
+	// If no height or width is specified, the button defaults to having padding to space things out.
+	// If a height is specified and a width is not, the button will have right/left padding.
+	// If a width is specified and a height is not, the button will have top/bottom padding.
+	// If the button has both width and height specified, there will be no padding.
 	@if $btn-height == null and $btn-width == null {
 		padding: 0.313em 0.938em; // 5px 15px
 	} @else if $btn-height != null and $btn-width == null {
@@ -112,7 +130,8 @@ $throb-size: 1.25;
 		padding: 0;
 	}
 
-	// These three properties are activated if they have values (e.g. are not null, otherwise they don't show up and padding is used)
+	// These three properties are activated if they have values (e.g. are not 
+	// null, otherwise they don't show up and padding is used).
 	height: $btn-height;
 	line-height: $btn-height;
 	width: $btn-width;
@@ -127,7 +146,8 @@ $throb-size: 1.25;
 		background-color: darken($btn-color, 20%);
 		border-color: darken($btn-color, 20%);
 
-		// stops the fade on click, and is instantaneous instead
+		// Set transition to none to stop the fade on click, making the color
+		// change instantaneous instead.
 		@include vendorPrefixes(transition, none);
 	}
 
@@ -135,6 +155,7 @@ $throb-size: 1.25;
 		opacity: 0.4;
 		cursor: default;
 
+		// Don't show an animation when the button goes from enabled to disabled
 		@include animation($name: none);
 	}
 
@@ -142,28 +163,39 @@ $throb-size: 1.25;
 		color: $btn-color;
 		background-color: transparent;
 		
+		// When hovering and trying to interact with the disabled button,
+		// show the Vibrate animation.
 		@include animation($name: vibrate, $duration: 300ms);
 	}
 }
 
 
-// BUTTON THEME VARIATIONS
-// blue
+// Color schemes
+$blue: #2c82c9;
+$red: #e14938;
+$green: #1abc9c;
+$orange: #fba026;
+$purple: #9365b8;
+
+
+// Button theme variations: Color is required, height and width are not
 .btn-primary {
+	// Defaults to the padding specified in the mixin
 	@include btn-theme($blue);
 }
-// red
 .btn-secondary {
+	// Uses specified width, but padding for height
 	@include btn-theme($red, $btn-width: 100px);
 }
-// green
 .btn-previous {
+	// Uses specified height, but padding for width
 	@include btn-theme($green, $btn-height: 80px);
 } 
-// orange
 .btn-continue {
+	// Used both specified height and width
 	@include btn-theme($orange, 80px, 140px);
 }
 .btn-large {
+	// Used both specified height and width
 	@include btn-theme($purple, 100px, 50%);
 }
